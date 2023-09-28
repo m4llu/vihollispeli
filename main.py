@@ -19,9 +19,22 @@ def control(characters, event):
         if event.key == pygame.K_SPACE:
             for character in characters:
                 character[3] = True
+        elif event.key == pygame.K_RIGHT:
+            mainCharacter = characters[0]
+            mainCharacter[1] += 10
+        elif event.key == pygame.K_LEFT:
+            mainCharacter = characters[0]
+            mainCharacter[1] -= 10
+        elif event.key == pygame.K_UP:
+            mainCharacter = characters[0]
+            mainCharacter[2] -= 10
+        elif event.key == pygame.K_DOWN:
+            mainCharacter = characters[0]
+            mainCharacter[2] += 10
+ 
 
 def main():
-    characters = [["catSmall.png", 100, 100, True], ["catSmallGreen.png", 300, 300, False]]
+    characters = [["catSmall.png", 100, 100, True], ["catSmallGreen.png", 400, 400, False]]
     print(characters)
     while True:
         event = pygame.event.poll()
