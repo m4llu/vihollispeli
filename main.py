@@ -52,17 +52,14 @@ def control(characters, event, enemies):
         
         characters.append(mainCharacter)
 
-def enemyMovement(enemies, enemySpeed):
-    speed = 1
-    enemy1 = enemies[0]
-    if enemy1[3] == True:
-        if enemy1[1] > 870:
-            speed = 1
-        if enemy1[1] < 10:
-            speed = -1
-        enemy1[1] += speed
-
-        
+def enemyMovement(enemies, speed):
+    for enemy in enemies:
+        file, x, y, isDrawn = enemy
+        if isDrawn:
+            if x <= 0 or x >= 900:
+                speed = speed * -1
+            x += speed
+            enemy[1] = x
 
 def main():
     characters = [["player.png", 100, 100, True]]
@@ -74,10 +71,9 @@ def main():
             break
 
         canvas.fill((0, 50, 0))
-        
+        enemyMovement(enemies, 1)
         drawing(canvas, characters, enemies)
         control(characters, event, enemies)
-        enemyMovement(enemies, enemySpeed)
         
         pygame.display.flip()
 
