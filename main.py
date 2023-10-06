@@ -29,15 +29,23 @@ def control(characters, event, enemies, gameOverImage):
     if len(characters) > 0:
         mainCharacter = characters[0]
         for enemy in enemies:
-            del characters[0]
+            if len(characters) > 0:
+                del characters[0]
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                for enemy in enemies:
-                    enemy[3] = True 
+                    randx = random.randint(200, 800)
+                    randy = random.randint(200, 800)
+                    color = random.randint(1, 3)
+                    if color == 1:
+                        enemies.append(["crocorange.png", randx, randy, True])
+                    elif color == 2:
+                        enemies.append(["croc.png", randx, randy, True])
+                    else:
+                        enemies.append(["crocpurple.png", randx, randy, True])
     
         keys = pygame.key.get_pressed()
-    
+        # movement
         if keys[pygame.K_RIGHT]:
             if mainCharacter[1] < 880:
                 mainCharacter[1] += playerSpeed
@@ -56,9 +64,9 @@ def control(characters, event, enemies, gameOverImage):
         
         characters.append(mainCharacter)
 
-        # Tarkista osuuko pelaaja viholliseen
+        # collision check
         for enemy in enemies:
-            if mainCharacter[1] + 50 > enemy[1] and mainCharacter[1] < enemy[1] + 50 and mainCharacter[2] + 50 > enemy[2] and mainCharacter[2] < enemy[2] + 50:
+            if mainCharacter[1] + 100 > enemy[1] and mainCharacter[1] < enemy[1] + 50 and mainCharacter[2] + 200 > enemy[2] and mainCharacter[2] < enemy[2] + 50:
                 gameOverImage[3] = True
                 pygame.mixer.music.load('Smurf.wav')
                 pygame.mixer.music.play(-1)
@@ -75,12 +83,11 @@ def enemyMovement(enemies, speed):
                 enemy[2] = random.randint(0, 1000)
             enemy[1] += 1
 
+
 def main():
     characters = [["player.png", 100, 100, True]]
-    enemies = [["croc.png", 400, 400, False]]
+    enemies = [["croc.png", 400, 400, True], ["crocorange.png", 400, 400, True]]
     gameOverImage = ["gameover.png", 250, 200, False]
-    print(characters)
-    enemy1 = enemies[0]
     while True:
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
@@ -91,6 +98,13 @@ def main():
         enemyMovement(enemies, 1)
         drawing(canvas, characters, enemies, gameOverImage)
         control(characters, event, enemies, gameOverImage)
+        if gameOverImage[3] == True:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    characters = [["player.png", 100, 100, True]]
+                    enemies = [["croc.png", 400, 400, True], ["crocorange.png", 400, 400, True]]
+                    gameOverImage = ["gameover.png", 250, 200, False]
+                    pygame.mixer.music.stop()
         
         pygame.display.flip()
 
