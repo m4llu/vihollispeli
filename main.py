@@ -56,15 +56,15 @@ def enemyMovement(enemies, speed):
     for enemy in enemies:
         file, x, y, isDrawn = enemy
         if isDrawn:
-            if x <= 0 or x >= 900:
-                speed = speed * -1
-            x += speed
-            enemy[1] = x
+            if x >= 1000:
+                enemy[1] = -200
+            enemy[1] += 1
 
 def main():
     characters = [["player.png", 100, 100, True]]
     enemies = [["croc.png", 400, 400, False]]
     print(characters)
+    enemy1 = enemies[0]
     while True:
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
